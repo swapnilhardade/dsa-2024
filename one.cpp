@@ -2,67 +2,43 @@
 #include <string>
 using namespace std;
 
-// Structure to store student information
 struct Student {
     int id;
     string name;
     float cgpa;
 };
 
-// Function to insert student records
-void insertRecords(Student* students, int n) {
-    cout << "\nEnter details of " << n << " students:\n";
+int main() {
+    int n = 5, searchID, found = 0;
+    Student* s = new Student[n];
+    
+    cout << "Enter 5 student records:\n";
     for (int i = 0; i < n; i++) {
-        cout << "\nStudent " << i + 1 << ":\n";
-        cout << "Enter ID: ";
-        cin >> students[i].id;
-        cin.ignore(); // clear input buffer
+        cout << "\nEnter ID: ";
+        cin >> s[i].id;
         cout << "Enter Name: ";
-        getline(cin, students[i].name);
+        cin >> s[i].name;
         cout << "Enter CGPA: ";
-        cin >> students[i].cgpa;
+        cin >> s[i].cgpa;
     }
-}
 
-// Function to display all student records
-void displayRecords(Student* students, int n) {
-    cout << "\n--- Student Records ---\n";
-    cout << "ID\tName\t\tCGPA\n";
-    cout << "-------------------------------\n";
+    cout << "\nAll Student Records:\n";
     for (int i = 0; i < n; i++) {
-        cout << students[i].id << "\t" << students[i].name << "\t\t" << students[i].cgpa << endl;
+        cout << s[i].id << "\t" << s[i].name << "\t" << s[i].cgpa << endl;
     }
-}
 
-// Function to search a student by ID using Linear Search
-void searchByID(Student* students, int n, int key) {
-    bool found = false;
+    cout << "\nEnter ID to search: ";
+    cin >> searchID;
     for (int i = 0; i < n; i++) {
-        if (students[i].id == key) {
-            cout << "\nRecord Found!\n";
-            cout << "ID: " << students[i].id << "\n";
-            cout << "Name: " << students[i].name << "\n";
-            cout << "CGPA: " << students[i].cgpa << "\n";
-            found = true;
+        if (s[i].id == searchID) {
+            cout << "\nRecord Found:\n";
+            cout << s[i].id << "\t" << s[i].name << "\t" << s[i].cgpa << endl;
+            found = 1;
             break;
         }
     }
-    if (!found)
-        cout << "\nNo student found with ID " << key << ".\n";
-}
+    if (!found) cout << "\nRecord not found!\n";
 
-int main() {
-    int n = 5; // number of students
-    Student* students = new Student[n]; // dynamic memory allocation
-
-    insertRecords(students, n);
-    displayRecords(students, n);
-
-    int searchID;
-    cout << "\nEnter ID to search: ";
-    cin >> searchID;
-    searchByID(students, n, searchID);
-
-    delete[] students; // free allocated memory
+    delete[] s;
     return 0;
 }
