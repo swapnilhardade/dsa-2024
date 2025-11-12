@@ -1,19 +1,15 @@
-# Define a class for each node in the BST
 class Node:
     def _init_(self, data):
         self.data = data
         self.left = None
         self.right = None
 
-
-# Define a class for the Binary Search Tree
 class BST:
     def _init_(self):
         self.root = None
 
-    # Function to insert nodes into BST
     def insert(self, data):
-        if self.root is None:
+        if not self.root:
             self.root = Node(data)
         else:
             self._insert(self.root, data)
@@ -30,64 +26,47 @@ class BST:
             else:
                 self._insert(root.right, data)
 
-    # Display all parent nodes
     def display_parents(self, root):
         if root:
             if root.left or root.right:
-                print(root.data, end=' ')
+                print(root.data, end=" ")
             self.display_parents(root.left)
             self.display_parents(root.right)
 
-    # Display all child nodes
     def display_children(self, root):
         if root:
             if root.left:
-                print(root.left.data, end=' ')
+                print(root.left.data, end=" ")
             if root.right:
-                print(root.right.data, end=' ')
+                print(root.right.data, end=" ")
             self.display_children(root.left)
             self.display_children(root.right)
 
-    # Display all leaf nodes
     def display_leaves(self, root):
         if root:
-            if root.left is None and root.right is None:
-                print(root.data, end=' ')
+            if not root.left and not root.right:
+                print(root.data, end=" ")
             self.display_leaves(root.left)
             self.display_leaves(root.right)
 
-    # Display tree level (level-order traversal)
-    def display_level(self):
-        if self.root is None:
-            return
-        queue = [self.root]
-        while queue:
-            node = queue.pop(0)
-            print(node.data, end=' ')
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
+    def height(self, root):
+        if not root:
+            return 0
+        return 1 + max(self.height(root.left), self.height(root.right))
 
-
-# ---- Main Program ----
 bst = BST()
+print("Enter 8 node values:")
+for i in range(8):
+    val = int(input(f"Enter value {i+1}: "))
+    bst.insert(val)
 
-# Insert 8 nodes into BST
-nodes = [50, 30, 70, 20, 40, 60, 80, 35]
-for n in nodes:
-    bst.insert(n)
-
-# --- Choose one display operation below ---
-
-print("Parent Nodes:")
+print("\nParent Nodes:")
 bst.display_parents(bst.root)
 
-# print("Child Nodes:")
-# bst.display_children(bst.root)
+print("\nChild Nodes:")
+bst.display_children(bst.root)
 
-# print("Leaf Nodes:")
-# bst.display_leaves(bst.root)
+print("\nLeaf Nodes:")
+bst.display_leaves(bst.root)
 
-# print("Tree Level (Level-Order Traversal):")
-# bst.display_level()
+print("\nTree Level (Height):", bst.height(bst.root))
