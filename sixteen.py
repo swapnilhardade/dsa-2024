@@ -1,31 +1,16 @@
-# Naive String Matching Algorithm
+text = input("Enter the text: ")
+pattern = input("Enter the pattern to search: ")
 
-def naive_string_match(text, pattern):
-    n = len(text)
-    m = len(pattern)
-    occurrences = []
+n = len(text)
+m = len(pattern)
+positions = []
 
-    # Check pattern at every possible position in text
-    for i in range(n - m + 1):
-        match = True
-        for j in range(m):
-            if text[i + j] != pattern[j]:
-                match = False
-                break
-        if match:
-            occurrences.append(i)
+for i in range(n - m + 1):
+    if text[i:i+m] == pattern:
+        positions.append(i)
 
-    return occurrences
-
-
-# Main Program
-if _name_ == "_main_":
-    text = input("Enter the text: ")
-    pattern = input("Enter the pattern to search: ")
-
-    result = naive_string_match(text, pattern)
-
-    if result:
-        print(f"Pattern found at positions: {result}")
-    else:
-        print("Pattern not found in the given text.")
+if positions:
+    print("\nPattern found at positions:", positions)
+    print("Total occurrences:", len(positions))
+else:
+    print("\nPattern not found in the text.")
