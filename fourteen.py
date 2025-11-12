@@ -1,56 +1,34 @@
-# Program: Merge Sort to sort online orders by delivery time
-
-# Function to perform merge sort
-def merge_sort(orders):
-    if len(orders) > 1:
-        mid = len(orders) // 2
-        left_half = orders[:mid]
-        right_half = orders[mid:]
-
-        # Recursive calls
-        merge_sort(left_half)
-        merge_sort(right_half)
-
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr)//2
+        L = arr[:mid]
+        R = arr[mid:]
+        merge_sort(L)
+        merge_sort(R)
         i = j = k = 0
-
-        # Merging the two halves
-        while i < len(left_half) and j < len(right_half):
-            if left_half[i]['delivery_time'] < right_half[j]['delivery_time']:
-                orders[k] = left_half[i]
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
                 i += 1
             else:
-                orders[k] = right_half[j]
+                arr[k] = R[j]
                 j += 1
             k += 1
-
-        # Copy remaining elements
-        while i < len(left_half):
-            orders[k] = left_half[i]
+        while i < len(L):
+            arr[k] = L[i]
             i += 1
             k += 1
-
-        while j < len(right_half):
-            orders[k] = right_half[j]
+        while j < len(R):
+            arr[k] = R[j]
             j += 1
             k += 1
 
-# Main program
-if _name_ == "_main_":
-    # List of online orders with delivery time (in hours)
-    orders = [
-        {'order_id': 101, 'customer_name': 'Riya', 'delivery_time': 5},
-        {'order_id': 102, 'customer_name': 'Amit', 'delivery_time': 2},
-        {'order_id': 103, 'customer_name': 'Karan', 'delivery_time': 8},
-        {'order_id': 104, 'customer_name': 'Sneha', 'delivery_time': 3},
-        {'order_id': 105, 'customer_name': 'Priya', 'delivery_time': 6},
-    ]
+n = int(input("Enter number of online orders: "))
+orders = []
+for i in range(n):
+    t = int(input(f"Enter delivery time for order {i+1}: "))
+    orders.append(t)
 
-    print("Orders before sorting:")
-    for order in orders:
-        print(order)
-
-    merge_sort(orders)
-
-    print("\nOrders after sorting by delivery time (ascending):")
-    for order in orders:
-        print(order)
+print("\nDelivery times before sorting:", orders)
+merge_sort(orders)
+print("Delivery times after sorting:", orders)
