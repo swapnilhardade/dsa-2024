@@ -8,80 +8,51 @@ struct Student {
     float cgpa;
 };
 
-// Function to sort students by ID (needed before binary search)
-void sortStudents(Student* students, int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (students[i].id > students[j].id) {
-                Student temp = students[i];
-                students[i] = students[j];
-                students[j] = temp;
-            }
-        }
-    }
+void sortByID(Student* s, int n) {
+    for(int i=0;i<n-1;i++)
+        for(int j=0;j<n-i-1;j++)
+            if(s[j].id > s[j+1].id)
+                swap(s[j], s[j+1]);
 }
 
-// Function to display all records
-void displayStudents(Student* students, int n) {
-    cout << "\n--- Student Records ---\n";
-    for (int i = 0; i < n; i++) {
-        cout << "ID: " << students[i].id
-             << " | Name: " << students[i].name
-             << " | CGPA: " << students[i].cgpa << endl;
-    }
-}
-
-// Binary search function
-int binarySearch(Student* students, int n, int key) {
-    int low = 0, high = n - 1;
-    while (low <= high) {
-        int mid = (low + high) / 2;
-        if (students[mid].id == key)
-            return mid;
-        else if (students[mid].id < key)
-            low = mid + 1;
-        else
-            high = mid - 1;
+int binarySearch(Student* s, int n, int key) {
+    int l=0,h=n-1;
+    while(l<=h){
+        int m=(l+h)/2;
+        if(s[m].id==key) return m;
+        else if(s[m].id<key) l=m+1;
+        else h=m-1;
     }
     return -1;
 }
 
 int main() {
-    int n = 5;
-    Student* students = new Student[n];  // Dynamic memory allocation
-
-    cout << "Enter details of " << n << " students:\n";
-    for (int i = 0; i < n; i++) {
-        cout << "\nEnter ID: ";
-        cin >> students[i].id;
-        cout << "Enter Name: ";
-        cin.ignore(); 
-        getline(cin, students[i].name);
-        cout << "Enter CGPA: ";
-        cin >> students[i].cgpa;
+    int n=5, key;
+    Student* s=new Student[n];
+    
+    cout<<"Enter 5 student records:\n";
+    for(int i=0;i<n;i++){
+        cout<<"\nEnter ID: ";
+        cin>>s[i].id;
+        cout<<"Enter Name: ";
+        cin>>s[i].name;
+        cout<<"Enter CGPA: ";
+        cin>>s[i].cgpa;
     }
 
-    // Sort before performing binary search
-    sortStudents(students, n);
+    sortByID(s,n);
+    cout<<"\nAll Student Records (Sorted by ID):\n";
+    for(int i=0;i<n;i++)
+        cout<<s[i].id<<"\t"<<s[i].name<<"\t"<<s[i].cgpa<<endl;
 
-    // Display all student records
-    displayStudents(students, n);
+    cout<<"\nEnter ID to search: ";
+    cin>>key;
+    int pos=binarySearch(s,n,key);
+    if(pos!=-1)
+        cout<<"\nRecord Found:\n"<<s[pos].id<<"\t"<<s[pos].name<<"\t"<<s[pos].cgpa<<endl;
+    else
+        cout<<"\nRecord not found!\n";
 
-    // Search by ID
-    int searchID;
-    cout << "\nEnter ID to search: ";
-    cin >> searchID;
-
-    int result = binarySearch(students, n, searchID);
-    if (result != -1) {
-        cout << "\nRecord Found:\n";
-        cout << "ID: " << students[result].id
-             << " | Name: " << students[result].name
-             << " | CGPA: " << students[result].cgpa << endl;
-    } else {
-        cout << "\nRecord with ID " << searchID << " not found.\n";
-    }
-
-    delete[] students;  // Free dynamically allocated memory
+    delete[] s;
     return 0;
 }
