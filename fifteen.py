@@ -1,45 +1,32 @@
-# Fractional Knapsack Problem using Greedy Approach
+n = int(input("Enter number of items: "))
+weights = []
+profits = []
 
-class Item:
-    def _init_(self, value, weight):
-        self.value = value
-        self.weight = weight
-        self.ratio = value / weight  # value-to-weight ratio
+for i in range(n):
+    print(f"\nEnter details for item {i+1}:")
+    w = float(input("Weight: "))
+    p = float(input("Profit: "))
+    weights.append(w)
+    profits.append(p)
 
+capacity = float(input("\nEnter knapsack capacity: "))
 
-def fractional_knapsack(values, weights, capacity):
-    items = []
-    
-    # Create list of items
-    for i in range(len(values)):
-        items.append(Item(values[i], weights[i]))
-    
-    # Sort items by value-to-weight ratio in descending order
-    items.sort(key=lambda x: x.ratio, reverse=True)
-    
-    total_value = 0.0  # total profit
-    remaining_capacity = capacity
+ratio = [(profits[i]/weights[i], weights[i], profits[i]) for i in range(n)]
+ratio.sort(reverse=True)
 
-    for item in items:
-        if item.weight <= remaining_capacity:
-            # If item can be fully added
-            total_value += item.value
-            remaining_capacity -= item.weight
-        else:
-            # If only a fraction of item can be added
-            fraction = remaining_capacity / item.weight
-            total_value += item.value * fraction
-            remaining_capacity = 0
-            break  # Knapsack is full
-    
-    return total_value
+total_profit = 0
+remain = capacity
+print("\nItems considered (in order of profit/weight ratio):")
+for r, w, p in ratio:
+    if remain == 0:
+        break
+    if w <= remain:
+        print(f"Take full item with weight {w} and profit {p}")
+        remain -= w
+        total_profit += p
+    else:
+        print(f"Take {remain} of item with weight {w} and profit {p}")
+        total_profit += r * remain
+        remain = 0
 
-
-# --- Example Usage ---
-values = [60, 100, 120]   # Profits
-weights = [10, 20, 30]    # Weights
-capacity = 50             # Maximum capacity of knapsack
-
-max_profit = fractional_knapsack(values, weights, capacity)
-
-print(f"Maximum profit using fractional knapsack = {max_profit:.2f}")
+print("\nMaximum Profit =", total_profit)
